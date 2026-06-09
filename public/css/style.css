@@ -1,0 +1,1327 @@
+/* ==========================================================================
+           1. VARIABLES (:root) & RESET
+           ========================================================================== */
+:root {
+    /* Colores de la paleta original */
+    --color-primary-light: #AB72B8;
+    /* Morado claro */
+    --color-primary: #9472B8;
+    /* Morado medio / dominante */
+    --color-accent: #B83594;
+    /* Fucsia vibrante */
+    --color-secondary: #7E72B8;
+    /* Azul violáceo */
+    --color-terracotta: #B84654;
+    /* Terracota / Coral oscuro */
+
+    /* Colores de soporte */
+    --color-bg: #f8fafc;
+    --color-white: #ffffff;
+    --color-slate-50: #f1f5f9;
+    --color-slate-100: #e2e8f0;
+    --color-slate-400: #94a3b8;
+    --color-slate-500: #64748b;
+    --color-slate-600: #475569;
+    --color-slate-700: #334155;
+    --color-slate-800: #1e293b;
+    --color-emerald: #10b981;
+    --color-emerald-bg: #d1fae5;
+    --color-emerald-text: #065f46;
+    --color-blue-bg: #dbeafe;
+    --color-blue-text: #1e40af;
+    --color-purple-bg: #f3e8ff;
+    --color-purple-text: #6b21a8;
+    --color-amber: #f59e0b;
+
+    /* Sombras y Radios */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.5rem;
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 20px -2px rgba(148, 114, 184, 0.08);
+    --shadow-lg: 0 10px 25px -5px rgba(148, 114, 184, 0.15);
+    --shadow-accent: 0 8px 20px -4px rgba(184, 53, 148, 0.2);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-slate-700);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+/* Scrollbar Minimalista */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-slate-100);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-light);
+}
+
+/* ==========================================================================
+           2. COMPONENTE: APP (Estructura de la aplicación)
+           ========================================================================== */
+.app {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.app__main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.app__content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ==========================================================================
+           3. COMPONENTE: SIDEBAR (Barra de Navegación Lateral)
+           ========================================================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    width: 16rem;
+    background-color: var(--color-white);
+    border-right: 1px solid var(--color-slate-100);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: static;
+        transform: translateX(0);
+        height: 100%;
+    }
+}
+
+.sidebar--open {
+    transform: translateX(0);
+}
+
+/* Encabezado */
+.sidebar__header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar__brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar__logo-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    box-shadow: 0 4px 10px rgba(184, 53, 148, 0.2);
+}
+
+.sidebar__logo-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.sidebar__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+    letter-spacing: -0.025em;
+}
+
+.sidebar__title-highlight {
+    color: var(--color-accent);
+}
+
+.sidebar__subtitle {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+    font-weight: 500;
+    display: block;
+}
+
+.sidebar__close-btn {
+    background: none;
+    border: none;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .sidebar__close-btn {
+        display: none;
+    }
+}
+
+/* Navegación */
+.sidebar__nav {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-top: 1rem;
+}
+
+.sidebar__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-slate-500);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition-smooth);
+    border-left: 4px solid transparent;
+}
+
+.sidebar__nav-link:hover {
+    background-color: var(--color-bg);
+    color: var(--color-slate-800);
+}
+
+.sidebar__nav-link--active {
+    background-color: rgba(148, 114, 184, 0.1);
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+}
+
+.sidebar__nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Perfil de Usuario */
+.sidebar__profile-box {
+    margin: 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--color-slate-100);
+    background-color: rgba(248, 250, 252, 0.5);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.sidebar__user-details {
+    overflow: hidden;
+    flex: 1;
+}
+
+.sidebar__user-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-slate-800);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar__user-role {
+    font-size: 0.625rem;
+    color: var(--color-slate-400);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.sidebar__logout-btn {
+    background: none;
+    border: none;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.sidebar__logout-btn:hover {
+    color: var(--color-terracotta);
+}
+
+/* Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.sidebar-overlay--visible {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .sidebar-overlay--visible {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+           5. COMPONENTE REUTILIZABLE: TARJETA POS (pos-card)
+           ========================================================================== */
+.pos-card {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(241, 245, 249, 0.8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-smooth);
+}
+
+.pos-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+           6. COMPONENTE: INDICADORES (Métricas / KPI)
+           ========================================================================== */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .metrics-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+}
+
+.metric-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.metric-card__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-slate-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-card__value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-slate-800);
+}
+
+.metric-card__trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.metric-card__trend--up {
+    color: var(--color-emerald);
+}
+
+.metric-card__trend--down {
+    color: var(--color-terracotta);
+}
+
+.metric-card__trend--warning {
+    color: var(--color-amber);
+}
+
+.metric-card__trend-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.metric-card__icon-box {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metric-card__icon-box--primary {
+    background-color: rgba(171, 114, 184, 0.15);
+    color: var(--color-primary);
+}
+
+.metric-card__icon-box--secondary {
+    background-color: rgba(126, 114, 184, 0.15);
+    color: var(--color-secondary);
+}
+
+.metric-card__icon-box--accent {
+    background-color: rgba(184, 53, 148, 0.15);
+    color: var(--color-accent);
+}
+
+.metric-card__icon-box--terracotta {
+    background-color: rgba(184, 70, 84, 0.15);
+    color: var(--color-terracotta);
+}
+
+.metric-card__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* ==========================================================================
+           7. COMPONENTE: WORKSPACE POS (Grilla de productos + Terminal de Pago)
+           ========================================================================== */
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1280px) {
+    .workspace {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Panel de Productos */
+.pos-panel {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pos-panel__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .pos-panel__header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.pos-panel__title-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.pos-panel__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+.pos-panel__subtitle {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+}
+
+/* Categorías */
+.categories {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+}
+
+@media (min-width: 640px) {
+    .categories {
+        padding-bottom: 0;
+    }
+}
+
+.categories__btn {
+    background-color: var(--color-slate-50);
+    border: none;
+    color: var(--color-slate-600);
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    white-space: nowrap;
+}
+
+.categories__btn:hover {
+    background-color: var(--color-slate-100);
+}
+
+.categories__btn--active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* Grilla de Ítems de Productos */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tarjeta de Producto Individual */
+.product-card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-slate-100);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.product-card:hover {
+    background-color: rgba(241, 245, 249, 0.8);
+    transform: scale(1.02);
+}
+
+.product-card:active {
+    transform: scale(0.98);
+}
+
+.product-card__icon-wrapper {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    transition: var(--transition-smooth);
+}
+
+.product-card__icon-wrapper--cafe {
+    background-color: rgba(171, 114, 184, 0.2);
+    color: var(--color-primary);
+}
+
+.product-card__icon-wrapper--pan {
+    background-color: rgba(126, 114, 184, 0.2);
+    color: var(--color-secondary);
+}
+
+.product-card__icon-wrapper--jugo {
+    background-color: rgba(184, 53, 148, 0.2);
+    color: var(--color-accent);
+}
+
+.product-card__icon-wrapper--tarta {
+    background-color: rgba(184, 70, 84, 0.2);
+    color: var(--color-terracotta);
+}
+
+.product-card:hover .product-card__icon-wrapper--cafe {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+.product-card:hover .product-card__icon-wrapper--pan {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.product-card:hover .product-card__icon-wrapper--jugo {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+.product-card:hover .product-card__icon-wrapper--tarta {
+    background-color: var(--color-terracotta);
+    color: var(--color-white);
+}
+
+.product-card__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+.product-card__category {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+    margin-bottom: 0.5rem;
+}
+
+.product-card__price {
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: var(--color-accent);
+    margin-top: auto;
+}
+
+/* Historial de Transacciones */
+.history {
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-slate-100);
+    padding-top: 1.5rem;
+}
+
+.history__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+    margin-bottom: 1rem;
+}
+
+.history__table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.75rem;
+    color: var(--color-slate-600);
+}
+
+.history__th {
+    font-weight: 600;
+    color: var(--color-slate-400);
+    border-bottom: 1px solid var(--color-slate-100);
+    padding-bottom: 0.5rem;
+}
+
+.history__td {
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--color-slate-50);
+}
+
+.history__td--bold {
+    font-weight: 500;
+    color: var(--color-slate-800);
+}
+
+.history__td--right {
+    text-align: right;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+.history__badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.625rem;
+}
+
+.history__badge--efectivo {
+    background-color: var(--color-emerald-bg);
+    color: var(--color-emerald-text);
+}
+
+.history__badge--tarjeta {
+    background-color: var(--color-blue-bg);
+    color: var(--color-blue-text);
+}
+
+.history__badge--nfc {
+    background-color: var(--color-purple-bg);
+    color: var(--color-purple-text);
+}
+
+/* ==========================================================================
+           8. COMPONENTE: TERMINAL DE COBRO (Lado Derecho)
+           ========================================================================== */
+.terminal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid rgba(148, 114, 184, 0.1);
+    padding: 1.5rem;
+}
+
+/* Cabecera terminal */
+.terminal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-slate-100);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.terminal__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+.terminal__subtitle {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+}
+
+.terminal__clear-btn {
+    background: none;
+    border: none;
+    color: var(--color-terracotta);
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.terminal__clear-btn:hover {
+    background-color: rgba(184, 70, 84, 0.1);
+}
+
+/* Lista de Carrito */
+.cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.cart-list__empty {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--color-slate-400);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cart-list__empty-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto;
+    color: var(--color-slate-100);
+}
+
+.cart-list__empty-title {
+    font-size: 0.875rem;
+    color: var(--color-slate-500);
+}
+
+.cart-list__empty-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+}
+
+/* Item de compra individual */
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-slate-50);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-slate-100);
+    transition: var(--transition-smooth);
+}
+
+.cart-item__left-box {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.cart-item__icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    border: 1px solid var(--color-slate-100);
+}
+
+.cart-item__icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.cart-item__title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+}
+
+.cart-item__price {
+    font-size: 0.625rem;
+    color: var(--color-slate-400);
+}
+
+.cart-item__right-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Controles de cantidad */
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-slate-100);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem;
+}
+
+.qty-control__btn {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: none;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+}
+
+.qty-control__btn:hover {
+    background-color: var(--color-slate-50);
+    color: var(--color-slate-800);
+}
+
+.qty-control__value {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-slate-700);
+    min-width: 0.75rem;
+    text-align: center;
+}
+
+.cart-item__total {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--color-slate-800);
+    width: 3rem;
+    text-align: right;
+}
+
+/* Resumen de Pago */
+.summary {
+    border-top: 1px solid var(--color-slate-100);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.summary__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--color-slate-500);
+}
+
+.summary__val {
+    font-weight: 600;
+}
+
+.summary__row--total {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+    border-top: 1px dashed var(--color-slate-100);
+    padding-top: 0.25rem;
+}
+
+.summary__val--total {
+    color: var(--color-accent);
+    font-size: 1.125rem;
+    font-weight: 900;
+}
+
+/* Botones de Métodos de Pago */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.payment-methods__btn {
+    border: 1px solid var(--color-slate-200);
+    background-color: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--color-slate-600);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.payment-methods__btn:hover {
+    border-color: var(--color-accent);
+}
+
+.payment-methods__btn:active {
+    transform: scale(0.95);
+}
+
+.payment-methods__btn--active {
+    border-color: var(--color-accent);
+    background-color: rgba(184, 53, 148, 0.05);
+    color: var(--color-accent);
+}
+
+.payment-methods__icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-slate-500);
+    margin-bottom: 0.25rem;
+}
+
+.payment-methods__btn--active .payment-methods__icon {
+    color: var(--color-accent);
+}
+
+/* Botón Checkout Final */
+.terminal__submit-btn {
+    width: 100%;
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    padding: 0.875rem;
+    border-radius: var(--radius-lg);
+    border: none;
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 1rem;
+    box-shadow: var(--shadow-accent);
+}
+
+.terminal__submit-btn:hover {
+    opacity: 0.9;
+}
+
+.terminal__submit-btn:active {
+    transform: scale(0.98);
+}
+
+.terminal__submit-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* ==========================================================================
+           9. COMPONENTE: MODAL (Notificaciones personalizadas)
+           ========================================================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal-overlay--visible {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    max-width: 28rem;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: scale(0.95);
+    transition: var(--transition-smooth);
+}
+
+.modal-overlay--visible .modal {
+    transform: scale(1);
+}
+
+.modal__icon-box {
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-lg);
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+}
+
+.modal__icon-box--accent {
+    background-color: var(--color-accent);
+}
+
+.modal__icon-box--terracotta {
+    background-color: var(--color-terracotta);
+}
+
+.modal__icon-box--primary {
+    background-color: var(--color-primary);
+}
+
+.modal__icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.modal__title {
+    font-size: 1.125rem;
+    font-weight: 900;
+    color: var(--color-slate-800);
+}
+
+.modal__message {
+    font-size: 0.875rem;
+    color: var(--color-slate-500);
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal__btn {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: var(--color-white) !important;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 0.5rem;
+}
+
+.modal__btn:hover {
+    background-color: var(--color-accent);
+}
+
+.modal__btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+           10. COMPONENTE: FOOTER (Pie de Página)
+           ========================================================================== */
+.footer {
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-slate-100);
+    padding: 1rem 1.5rem;
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+    margin-top: auto;
+}
+
+.footer__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .footer__container {
+        flex-direction: row;
+    }
+}
+
+.footer__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer__status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-emerald);
+    animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.footer__status-text-highlight {
+    color: var(--color-slate-500);
+    font-weight: 600;
+}
+
+.footer__copyright-highlight {
+    color: var(--color-slate-500);
+    font-weight: 600;
+}
+
+.footer__links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer__link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer__link:hover {
+    color: var(--color-accent);
+}
+
+/* ==========================================================================
+   7. COMPONENTE: TARJETA DE TASA CAMBIARIA (EXCHANGE CARD)
+   ========================================================================== */
+
+/* Hace que en pantallas grandes la tarjeta ocupe el doble de espacio (2 columnas) */
+@media (min-width: 1024px) {
+    .exchange-card {
+        grid-column: span 2;
+    }
+}
+
+.exchange-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+/* En tablets o desktops se organiza en una sola fila armoniosa */
+@media (min-width: 768px) {
+    .exchange-card {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.exchange-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.exchange-card__title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-slate-800);
+}
+
+.exchange-card__description {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    max-width: 420px;
+    line-height: 1.4;
+}
+
+/* --- SUBCOMPONENTE: FORMULARIO DE TASA --- */
+.exchange-form__group {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-slate-50);
+    border: 1px solid var(--color-slate-100);
+    border-radius: var(--radius-full);
+    padding: 0.25rem 0.25rem 0.25rem 1.2rem;
+    transition: var(--transition-smooth);
+}
+
+/* Animación sutil de foco al hacer clic en el input */
+.exchange-form__group:focus-within {
+    border-color: var(--color-accent);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(184, 53, 148, 0.1);
+}
+
+.exchange-form__currency {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--color-slate-400);
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+.exchange-form__input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-slate-800);
+    width: 90px;
+    padding: 0.25rem 0;
+}
+
+/* Ocultar las flechas fastidiosas que traen los inputs de tipo número por defecto */
+.exchange-form__input::-webkit-outer-spin-button,
+.exchange-form__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.exchange-form__input {
+    -moz-appearance: textfield;
+    /* Para Firefox */
+}
+
+/* Botón estilo "pastilla" usando tu fucsia vibrante */
+.exchange-form__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.exchange-form__btn:hover {
+    background-color: #9c287a;
+    /* Un tono ligeramente más oscuro para el hover */
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-accent);
+}
+
+.exchange-form__btn:active {
+    transform: translateY(0);
+}
